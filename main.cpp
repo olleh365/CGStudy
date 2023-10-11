@@ -5,14 +5,20 @@ int winWidth = 800;
 int winHeight = 600;
 float pacManAngle = 45.0f;
 bool mouthOpen = true;
+float pacManX = 0.0f;
+float pacManY = 0.0f;
+float pacManSpeed = 0.02f;
 
 void drawPacMan() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glColor3f(1.0, 1.0, 0.0); // Yellow color
+    glPushMatrix();
+    glTranslatef(pacManX, pacManY, 0.0f); // 팩맨을 현재위치로 변환
+
+    glColor3f(1.0, 1.0, 0.0); // 팩맨 노란색깔
 
     glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(0.0, 0.0); // Center of Pac-Man
+    glVertex2f(0.0, 0.0); // 팩맨의 센터위치
 
     // 팩맨모양
     for (float angle = pacManAngle; angle <= 360.0 - pacManAngle; angle += 1.0) {
@@ -38,10 +44,13 @@ void drawPacMan() {
         glVertex2f(x2, y2);
         glEnd();
     }
+    glPopMatrix();
+
 
     glFlush();
 }
 
+//0.5초 단위로 팩맨 입벌렸다가 움츠렸다가 업데이트
 void updatePacMan(int value) {
     if (mouthOpen) {
         pacManAngle -= 2.0;
@@ -55,6 +64,24 @@ void updatePacMan(int value) {
 
     glutPostRedisplay();
     glutTimerFunc(50, updatePacMan, 0);
+}
+//팩맨 이동키
+void specialKeyFunc(int key, int x, int y) {
+    switch (key) {
+        case GLUT_KEY_UP:
+            pacManY += pacManSpeed;
+            break;
+        case GLUT_KEY_DOWN:
+            pacManY -= pacManSpeed;
+            break;
+        case GLUT_KEY_LEFT:
+            pacManX -= pacManSpeed;
+            break;
+        case GLUT_KEY_RIGHT:
+            pacManX += pacManSpeed;
+            break;
+    }
+    glutPostRedisplay();
 }
 
 int main(int argc, char* argv[]) {
@@ -74,6 +101,7 @@ int main(int argc, char* argv[]) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
+    glutSpecialFunc(specialKeyFunc);
 
     glutMainLoop();
 
