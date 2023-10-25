@@ -1,0 +1,120 @@
+#include <GL/glut.h>
+#include <GL/GL.h>
+#include <GL/GLU.h>
+#include <math.h>
+float pacManX = 0.0f;
+float pacManY = 0.0f;
+float pacManAngle = 45.0f;
+bool mouthOpen = true;
+int drawStarCount = 0;
+float drawStarsArray[1000][2] = {};
+float scale = 1.0;
+
+// 별 출력 함수
+void drawStars() {
+	glBegin(GL_POINTS);
+	glColor3f(1.0f, 1.0f, 1.0f);  // 흰색 점
+	if (drawStarCount < 1) {
+		for (int i = 0; i < 1000; ++i) {
+				drawStarsArray[i][0] = static_cast<float>(rand()) / RAND_MAX * 2.0f - 1.0f;  // -1.0부터 1.0 사이의 x 좌표
+				drawStarsArray[i][1] = static_cast<float>(rand()) / RAND_MAX * 2.0f - 1.0f;  // -1.0부터 1.0 사이의 y 좌표
+				
+			}
+	} drawStarCount++;
+	
+	for (int i = 0; i < 1000; ++i) {
+		glVertex2f(drawStarsArray[i][0], drawStarsArray[i][1]);
+	}
+	glEnd();
+}
+
+// 팩맨
+void drawPacMan() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	// 별 출력
+	glScalef(scale, scale, 1.0);
+	
+	glColor3f(1.0, 1.0, 0.0); // Yellow color
+	glPushMatrix();
+	glTranslatef(pacManX, pacManY, 0.0f); // 팩맨을 현재위치로 변환
+
+	glColor3f(1.0, 1.0, 0.0); // 팩맨 노란색깔
+
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(0.0, 0.0); // Center of Pac-Man
+	glVertex2f(0.0, 0.0); // 팩맨의 센터위치
+
+	
+	// 팩맨모양
+	for (float angle = pacManAngle; angle <= 360.0 - pacManAngle; angle += 1.0) {
+		float radians = angle * (3.14 / 180.0);
+		float x = 0.3 * cos(radians);
+		float y = 0.3 * sin(radians);
+		glVertex2f(x, y);
+	}
+	glEnd();
+	// 팩맨 입
+	if (mouthOpen) {
+		glBegin(GL_LINES);
+		glVertex2f(0.0, 0.0);
+		float radians1 = (pacManAngle - 20.0) * (3.14 / 180.0);
+		float x1 = 0.3 * cos(radians1);
+		float y1 = 0.3 * sin(radians1);
+		glVertex2f(x1, y1);
+		float radians2 = (360.0 - pacManAngle + 20.0) * (3.14 / 180.0);
+		float x2 = 0.3 * cos(radians2);
+		float y2 = 0.3 * sin(radians2);
+		glVertex2f(x2, y2);
+		glEnd();
+	}
+	glPopMatrix();
+	
+}
+
+// 장면 3 화면 출력 함수
+void Scene3() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	drawPacMan();
+	drawStars();
+	glFlush();
+}
+
+void mydisplay() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	Scene3();
+
+	glFlush();
+}
+
+
+
+//0.5초 단위로 팩맨 입벌렸다가 움츠렸다가 업데이트
+void updatePacMan(int value) {
+	
+	if (mouthOpen) {
+		pacManAngle -= 2.0;
+	}
+	else {
+		pacManAngle += 2.0;
+	}
+	if (pacManAngle <= 20.0 || pacManAngle >= 45.0) {
+		mouthOpen = !mouthOpen;
+	}
+	
+	scale += 0.00006;
+	glutPostRedisplay();
+	glutTimerFunc(50, updatePacMan, 0);
+}
+
+int main(int argc, char* argv[]) {
+	glutInit(&argc, argv);
+	glutInitWindowSize(1980, 1000);
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow("Space");
+
+	glutTimerFunc(50, updatePacMan, 0);
+	glutDisplayFunc(mydisplay);
+	glutMainLoop();
+	return 0;
+}
