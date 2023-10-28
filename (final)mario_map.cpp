@@ -677,7 +677,7 @@ void DrawBush_m(float x, float y) {
     glVertex2f(0.112 * x - 0.4 + (0.007 * -15), y * 0.196 + 0.106 + (0.01225 * -7));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 0), y * 0.196 + 0.106 + (0.01225 * -7));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 0), y * 0.196 + -0.09 + (0.01225 * 8));
-    
+
     glColor3f(0, 0, 0);
     glVertex2f(0.112 * x - 0.4 + (0.007 * -14), y * 0.196 + -0.09 + (0.01225 * 9));
     glVertex2f(0.112 * x - 0.4 + (0.007 * -14), y * 0.196 + 0.106 + (0.01225 * -6));
@@ -744,7 +744,7 @@ void DrawBush_m(float x, float y) {
     glVertex2f(0.112 * x - 0.512 + (0.007 * 15), y * 0.196 + 0.106 + (0.01225 * -5));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 15), y * 0.196 + -0.09 + (0.01225 * 8));
 }
-void DrawBush_l(float x,float y) {
+void DrawBush_l(float x, float y) {
     glColor3f(0.4992, 0.8112, 0.0624); //덤불 색
     glVertex2f(0.112 * x - 0.4 + (0.007 * -0), y * 0.196 + -0.09 + (0.01225 * 0));
     glVertex2f(0.112 * x - 0.4 + (0.007 * -0), y * 0.196 + 0.106 + (0.01225 * -9));
@@ -925,7 +925,7 @@ void DrawCloud_D_r(float x, float y) {
     glVertex2f(0.112 * x - 0.512 + (0.007 * 0), y * 0.196 + 0.106 + (0.01225 * -0));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 0), y * 0.196 + -0.09 + (0.01225 * 10));
 
-    glColor3f(1, 1, 1); 
+    glColor3f(1, 1, 1);
     glVertex2f(0.112 * x - 0.4 + (0.007 * -9), y * 0.196 + -0.09 + (0.01225 * 12));
     glVertex2f(0.112 * x - 0.4 + (0.007 * -9), y * 0.196 + 0.106 + (0.01225 * -1));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 5), y * 0.196 + 0.106 + (0.01225 * -1));
@@ -1103,7 +1103,7 @@ void DrawCloud_D_l(float x, float y) {
     glVertex2f(0.112 * x - 0.4 + (0.007 * -0), y * 0.196 + -0.09 + (0.01225 * 11));
     glVertex2f(0.112 * x - 0.4 + (0.007 * -0), y * 0.196 + 0.106 + (0.01225 * -4));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 13), y * 0.196 + 0.106 + (0.01225 * -4));
-    glVertex2f(0.112 * x - 0.512 + (0.007 * 13), y * 0.196 + -0.09 + (0.01225 *11));
+    glVertex2f(0.112 * x - 0.512 + (0.007 * 13), y * 0.196 + -0.09 + (0.01225 * 11));
     glColor3f(0, 0, 0);
     glVertex2f(0.112 * x - 0.4 + (0.007 * -3), y * 0.196 + -0.09 + (0.01225 * 12));
     glVertex2f(0.112 * x - 0.4 + (0.007 * -3), y * 0.196 + 0.106 + (0.01225 * -2));
@@ -1354,7 +1354,7 @@ void DrawCloud_U_l(float x, float y) {
     glVertex2f(0.112 * x - 0.512 + (0.007 * 13), y * 0.196 + 0.106 + (0.01225 * -8));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 13), y * 0.196 + -0.09 + (0.01225 * 7));
 }
-void DrawMountain_l(float x,float y) {
+void DrawMountain_l(float x, float y) {
     for (int i = 15; i >= 0; i--) {
         glColor3f(0, 0, 0);
         glVertex2f(0.112 * x - 0.4 + (0.007 * -i), y * 0.196 + -0.09 + (0.01225 * 0));
@@ -1368,7 +1368,7 @@ void DrawMountain_l(float x,float y) {
         glVertex2f(0.112 * x - 0.4 + (0.007 * -0), y * 0.196 + 0.106 + (0.01225 * (-16 + i)));
         glVertex2f(0.112 * x - 0.512 + (0.007 * i), y * 0.196 + 0.106 + (0.01225 * (-16 + i)));
         glVertex2f(0.112 * x - 0.512 + (0.007 * i), y * 0.196 + -0.09 + (0.01225 * 0));
-    }  
+    }
 }
 void DrawMountain_r(float x, float y) {
     for (int i = 15; i >= 0; i--) {
@@ -1397,7 +1397,7 @@ void DrawMountain_m(float x, float y) {
     glColor3f(0, 0, 0);
     glVertex2f(0.112 * x - 0.4 + (0.007 * -5), y * 0.196 + -0.09 + (0.01225 * 8));
     glVertex2f(0.112 * x - 0.4 + (0.007 * -5), y * 0.196 + 0.106 + (0.01225 * -4));
-    glVertex2f(0.112 * x - 0.512 + (0.007 * 9), y * 0.196 + 0.106 + (0.01225 *-4));
+    glVertex2f(0.112 * x - 0.512 + (0.007 * 9), y * 0.196 + 0.106 + (0.01225 * -4));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 9), y * 0.196 + -0.09 + (0.01225 * 8));
     glColor3f(0, 0, 0);
     glVertex2f(0.112 * x - 0.4 + (0.007 * -1), y * 0.196 + -0.09 + (0.01225 * 11));
@@ -1447,25 +1447,37 @@ void DrawMountain_t(float x, float y) {
     glVertex2f(0.112 * x - 0.512 + (0.007 * 5), y * 0.196 + 0.106 + (0.01225 * -13));
     glVertex2f(0.112 * x - 0.512 + (0.007 * 5), y * 0.196 + -0.09 + (0.01225 * 2));
 }
-void DrawCloud_zip(float a,float b) {
-    DrawCloud_D_r(a+1, b);
+void DrawCloud_zip(float a, float b) {
+    DrawCloud_D_r(a + 1, b);
     DrawCloud_D_m(a, b);
-    DrawCloud_D_l(a-1, b);
-    DrawCloud_U_r(a+1, b+1);
-    DrawCloud_U_m(a, b+1);
-    DrawCloud_U_l(a-1, b+1);
+    DrawCloud_D_l(a - 1, b);
+    DrawCloud_U_r(a + 1, b + 1);
+    DrawCloud_U_m(a, b + 1);
+    DrawCloud_U_l(a - 1, b + 1);
+}
+void DrawCloud_zip2(float a, float b) {
+    DrawCloud_D_r(a + 3, b);
+    DrawCloud_U_r(a + 3, b + 1);
+    DrawCloud_D_m(a, b);
+    DrawCloud_U_m(a, b + 1);
+    DrawCloud_D_m(a+1, b);
+    DrawCloud_U_m(a+1, b + 1);
+    DrawCloud_D_m(a+2, b);
+    DrawCloud_U_m(a+2, b + 1);
+    DrawCloud_D_l(a - 1, b);
+    DrawCloud_U_l(a - 1, b + 1);
 }
 void DrawBush_zip(float a) {
-    DrawBush_l(a-1,-3);
-    DrawBush_m(a,-3);
-    DrawBush_r(a+1,-3);
+    DrawBush_l(a - 1, -3);
+    DrawBush_m(a, -3);
+    DrawBush_r(a + 1, -3);
 
 }
 void DrawBush_zip2(float a) {
     DrawBush_l(a - 1, -3);
     DrawBush_m(a, -3);
-    DrawBush_m(a+1, -3);
-    DrawBush_r(a + 2,-3);
+    DrawBush_m(a + 1, -3);
+    DrawBush_r(a + 2, -3);
 }
 void DrawPipe_part_zip(float a) {
     DrawPipe_part_1(a, -3);
@@ -1474,9 +1486,9 @@ void DrawPipe_part_zip(float a) {
     DrawPipe_part_4(a + 1, -3);
 }
 void DrawMountain_zip(float a) {
-    DrawMountain_l(a-1, -3);
+    DrawMountain_l(a - 1, -3);
     DrawMountain_m(a, -3);
-    DrawMountain_r(a+1, -3);
+    DrawMountain_r(a + 1, -3);
     DrawMountain_t(a, -2);
 }
 void MyReshape(int NewWidth, int NewHeight) {
@@ -1498,9 +1510,10 @@ void Drawboxs() {
     DrawPipe_part_zip(11);
     DrawBush_zip(9);
     DrawBush_zip2(-3);
-    DrawCloud_zip(-2,3);
-    DrawCloud_zip(9,3);
+    DrawCloud_zip(-2, 3);
+    DrawCloud_zip2(9, 3);
     DrawMountain_zip(2);
+
 
 
     for (int i = -10; i <= -4; i++) {
