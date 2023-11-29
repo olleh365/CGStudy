@@ -1,7 +1,7 @@
 #include <GL/glut.h>
 #include <cmath>
 
-int time = 0;
+int settime = 0;
 float b = 0.6;
 float move = 0;
 float ciga_move = 0;
@@ -1854,7 +1854,7 @@ void DrawMonster() {
     glVertex2f(0.112 * 4 - 0.512 + (0.007 * 6) + move, -3 * 0.196 + 0.106 + (0.01225 * -6));
     glVertex2f(0.112 * 4 - 0.512 + (0.007 * 6) + move, -3 * 0.196 + -0.09 + (0.01225 * 9));
 }
-void Fire1(int x,int y) 
+void Fire1(int x, int y)
 {
     glBegin(GL_QUADS);
 
@@ -2797,49 +2797,49 @@ void Fire_f() {
         Fire2(1, -3);
         Fire2(3, -3);
     }
-    if (time >= 1100 && time < 1160) {
+    if (settime >= 1100 && settime < 1160) {
         firebool = true;
     }
-    if (time >= 1160 && time < 1220) {
+    if (settime >= 1160 && settime < 1220) {
         firebool = false;
     }
-    if (time >= 1220 && time < 1280) {
+    if (settime >= 1220 && settime < 1280) {
         firebool = true;
     }
-    if (time >= 1280 && time < 1340) {
+    if (settime >= 1280 && settime < 1340) {
         firebool = false;
     }
-    if (time >= 1340 && time < 1400) {
+    if (settime >= 1340 && settime < 1400) {
         firebool = true;
     }
-    if (time >= 1400 && time < 1460) {
+    if (settime >= 1400 && settime < 1460) {
         firebool = true;
     }
-    if (time >= 1460 && time < 1520) {
+    if (settime >= 1460 && settime < 1520) {
         firebool = false;
     }
-    if (time >= 1520 && time < 1580) {
+    if (settime >= 1520 && settime < 1580) {
         firebool = true;
     }
-    if (time >= 1580 && time < 1640) {
+    if (settime >= 1580 && settime < 1640) {
         firebool = false;
     }
-    if (time >= 1640 && time < 1700) {
+    if (settime >= 1640 && settime < 1700) {
         firebool = true;
     }
-    if (time >= 1700 && time < 1760) {
+    if (settime >= 1700 && settime < 1760) {
         firebool = false;
     }
-    if (time >= 1760 && time < 1820) {
+    if (settime >= 1760 && settime < 1820) {
         firebool = true;
     }
-    if (time >= 1820 && time < 1880) {
+    if (settime >= 1820 && settime < 1880) {
         firebool = false;
     }
-    if (time >= 1880 && time < 1940) {
+    if (settime >= 1880 && settime < 1940) {
         firebool = true;
     }
-    if (time >= 1940 && time < 2000) {
+    if (settime >= 1940 && settime < 2000) {
         firebool = false;
     }
 }
@@ -2878,25 +2878,25 @@ void Drawboxs() {
     DrawBush_zip2(-3);
     Draw_m_Randbox();
     DrawMountain_zip(2);
-    
+
     DrawPacMan();
     DrawCloud_zip(-2, 3);
     DrawCloud_zip2(9, 3);
 
-    if (time<2500&&time >= 1100) {
+    if (settime < 2500 && settime >= 1100) {
         Fire_f();
     }
-    if (time <2500 && time>1400) {
+    if (settime < 2500 && settime>1400) {
         Fire_s();
     }
-    if (time <2500&& time>1700) {
+    if (settime < 2500 && settime>1700) {
         Fire_t();
     }
     DrawMonster();
-    if (time >= 550&&time<=950) {
+    if (settime >= 550 && settime <= 950) {
         Drawcigarette();
     }
-    if (time<1100&&time >= 1000) {
+    if (settime < 1100 && settime >= 1000) {
         Drawcigarette2();
     }
 
@@ -2928,19 +2928,19 @@ void updatePacMan() {
             pacMan.isOpening = true;
         }
     }
-    if (time >= 445 && time < 495) {
+    if (settime >= 445 && settime < 495) {
         pacMan.y += 0.008;
     }
-    if (time >= 495 && time < 545) {
+    if (settime >= 495 && settime < 545) {
         pacMan.y -= 0.008;
     }
-    if (time == 420) {
+    if (settime == 420) {
         move += 5000000;
         pacMan.y += 0.025;
         pacMan.radius += 0.02;
         b -= 0.1;
     }
-    if (time >= 650 && time < 1150) {
+    if (settime >= 650 && settime < 1150) {
         pacMan_move = false;
     }
     else {
@@ -2948,7 +2948,7 @@ void updatePacMan() {
     }
 }
 void update_ciga() {
-    if (time >= 550) {
+    if (settime >= 550) {
         if (cigamoveRight)
         {
             ciga_move += 0.0025;
@@ -2973,14 +2973,14 @@ void update_ciga() {
         }
     }
 }
-void update_ciga2() 
+void update_ciga2()
 {
-    if (time < 1050 && time >= 1000) 
+    if (settime < 1050 && settime >= 1000)
     {
         ciga_u_move2 += 0.005;
         ciga_move2 -= 0.005;
     }
-    if (time < 1100 && time >=1050)
+    if (settime < 1100 && settime >= 1050)
     {
         ciga_u_move2 -= 0.005;
         ciga_move2 -= 0.005;
@@ -3002,19 +3002,23 @@ void update_mob() {
     }
 }
 void update_box() {
-    if (time >= 500 && time < 525) {
+    if (settime >= 500 && settime < 525) {
         randbox_y += 0.002;
     }
-    if (time >= 525 && time < 550) {
+    if (settime >= 525 && settime < 550) {
         randbox_y -= 0.004;
     }
-    if (time >= 550&& time < 575) {
+    if (settime >= 550 && settime < 575) {
         randbox_y += 0.002;
     }
 }
-void timer(int value) 
+void update_file()
 {
-    time++;
+
+}
+void timer(int value)
+{
+    settime++;
     glutPostRedisplay();
     glutTimerFunc(16, timer, 0); // 60 frames per second
 }
@@ -3028,17 +3032,13 @@ void MyDisplay()
     update_ciga();
     update_ciga2();
     update_box();
-    
+
     Drawboxs();
     glColor3f(0.832, 0.273, 0.027);
     glBegin(GL_QUADS);
     glFlush();
     glEnd();
-    
-   
-
     glutSwapBuffers();
-
 }
 int main(int argc, char* argv[])
 {
@@ -3050,5 +3050,4 @@ int main(int argc, char* argv[])
     glutReshapeFunc(MyReshape);
     glutTimerFunc(0, timer, 0);
     glutMainLoop();
-
 }
