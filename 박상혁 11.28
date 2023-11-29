@@ -1,0 +1,763 @@
+#include <GL/glut.h>
+#include <GL/GL.h>
+#include <GL/GLU.h>
+#include <math.h>
+#include <stdio.h>
+float pacManX3 = -1.0f;		// 팩맨 왼쪽 화면 끝에서 출발 = -1
+float pacManY3 = 0.0f;
+float pacManSpeed3 = 0.005f;
+float pacManAngle3 = 45.0f;
+bool mouthOpen3 = true;
+int drawStarCount = 0;
+float drawStarsArray[1000][2] = {};
+float scale = 1.0;
+int Cflag = 1;	// 초록색 대륙
+double mspeed = 50;	// 입벌리는 속도 느려지게끔
+
+// 담배 관련 변수들
+bool t1 = true;
+bool t2 = true;
+bool t3 = true;
+bool tfire = true;
+double xfire = 0;
+double yfire = 0;
+double tfireX, tfireY;
+bool firemode = true;
+double t2X, t2Y;
+double x2, y2;
+double t3X, t3Y;
+double x3, y3;
+double t3glR = 0.8, t3glG = 0.8, t3glB = 0.8;
+double t2glR = 0.8, t2glG = 0.8, t2glB = 0.8;
+double t1X, t1Y;
+double x1, y11;
+double tabaX = 0.4;
+double tabaY = 1.5; //0.05;
+bool emergencytabacco = true;
+bool movetabacco = false;
+bool smokingtabacco = false;
+bool downt3 = false;
+bool downt2 = false;
+
+// 별 출력 함수
+void drawStars() {
+	glBegin(GL_POINTS);
+	glColor3f(1.0f, 1.0f, 1.0f);  // 흰색 점
+	if (drawStarCount < 1) {
+		for (int i = 0; i < 1000; ++i) {
+			drawStarsArray[i][0] = static_cast<float>(rand()) / RAND_MAX * 2.0f - 1.0f;  // -1.0부터 1.0 사이의 x 좌표
+			drawStarsArray[i][1] = static_cast<float>(rand()) / RAND_MAX * 2.0f - 1.0f;  // -1.0부터 1.0 사이의 y 좌표
+
+		}
+	} drawStarCount++;
+
+	for (int i = 0; i < 1000; ++i) {
+		glVertex2f(drawStarsArray[i][0], drawStarsArray[i][1]);
+	}
+	glEnd();
+}
+
+// 대륙1
+void continent1() {
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.1, 0.4);
+	glVertex2f(-0.095, 0.42);
+	glVertex2f(-0.07, 0.47);
+	glVertex2f(-0.04, 0.48);
+	glVertex2f(-0.01, 0.47);
+	glVertex2f(0.02, 0.45);
+	glVertex2f(0.05, 0.42);		// (1)
+	glVertex2f(0.08, 0.35);
+	glVertex2f(0.04, 0.28);
+	glVertex2f(0.02, 0.25);
+	glVertex2f(0.01, 0.2);
+	glVertex2f(0.007, 0.16);
+	glVertex2f(0.005, 0.16);
+	glVertex2f(0, 0.2);
+	glVertex2f(-0.03, 0.2);
+	glVertex2f(-0.03, 0.23);
+	glVertex2f(-0.03, 0.2);		//(2)
+	glVertex2f(-0.02, 0.18);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.02, 0.18);
+	glVertex2f(-0.023, 0.14);
+	glVertex2f(-0.018, 0.08);
+	glVertex2f(-0.024, 0);
+	glVertex2f(-0.03, -0.03);
+	glVertex2f(-0.038, -0.06);	//(3)
+	glVertex2f(-0.05, -0.04);
+	glVertex2f(-0.07, -0.02);
+	glVertex2f(-0.09, 0.05);
+	glVertex2f(-0.06, 0.07);
+	glVertex2f(-0.06, 0.08);
+	glVertex2f(-0.1, 0.09);
+	glVertex2f(-0.1, 0.08);
+	glVertex2f(-0.07, 0.1);
+	glVertex2f(-0.1, 0.16);
+	glVertex2f(-0.15, 0.2);
+	glVertex2f(-0.15, 0.24);	//(4)
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.15, 0.24);
+	glVertex2f(-0.12, 0.25);
+	glVertex2f(-0.08, 0.24);
+	glVertex2f(-0.06, 0.27);
+	glVertex2f(-0.07, 0.29);
+	glVertex2f(-0.1, 0.32);
+	glVertex2f(-0.13, 0.34);
+	glVertex2f(-0.11, 0.37);
+	glVertex2f(-0.1, 0.4);
+	glVertex2f(-0.02, 0.18);
+	glEnd();
+}
+// 대륙2
+void continent2() {
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.45, -0.3);
+	glVertex2f(-0.38, -0.35);
+	glVertex2f(-0.35, -0.33);
+	glVertex2f(-0.32, -0.36);
+	glVertex2f(-0.29, -0.38);
+	glVertex2f(-0.3, -0.3);
+	glVertex2f(-0.27, -0.25);
+	glVertex2f(-0.28, -0.21);
+	glVertex2f(-0.24, -0.16);
+	glVertex2f(-0.17, -0.1);
+	glVertex2f(-0.178, -0.06);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.178, -0.06);
+	glVertex2f(-0.24, -0.02);
+	glVertex2f(-0.24, -0.06);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.24, -0.02);
+	glVertex2f(-0.26, 0.04);
+	glVertex2f(-0.26, -0.02);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.26, 0.04);
+	glVertex2f(-0.22, 0.07);
+	glVertex2f(-0.24, 0.08);
+	glVertex2f(-0.27, 0.1);
+	glVertex2f(-0.29, 0.13);
+	glVertex2f(-0.32, 0.12);
+	glVertex2f(-0.35, 0.09);
+	glVertex2f(-0.394, 0.13);
+	glVertex2f(-0.41, 0.09);
+	glVertex2f(-0.394, 0.05);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.394, 0.05);
+	glVertex2f(-0.41, 0.09);
+	glVertex2f(-0.45, 0.06);
+	glVertex2f(-0.43, 0.03);
+	glVertex2f(-0.44, 0.0);
+	glVertex2f(-0.35, 0);
+	glVertex2f(-0.35, 0.09);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.44, 0.0);
+	glVertex2f(-0.46, -0.05);
+	glVertex2f(-0.48, -0.08);
+	glVertex2f(-0.48, -0.12);
+	glVertex2f(-0.44, -0.14);
+	glVertex2f(-0.45, -0.3);
+	glVertex2f(-0.35, -0.3);
+	glVertex2f(-0.35, 0);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.35, 0.1);
+	glVertex2f(-0.26, 0.04);
+	glVertex2f(-0.26, -0.16);
+	glVertex2f(-0.35, -0.23);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.178, -0.06);
+	glVertex2f(-0.24, -0.02);
+	glVertex2f(-0.24, -0.13);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.26, -0.02);
+	glVertex2f(-0.24, -0.02);
+	glVertex2f(-0.24, -0.13);
+	glVertex2f(-0.26, -0.14);
+	glEnd();
+}
+// 대륙3
+void continent3() {
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.05, -0.35);
+	glVertex2f(-0.05, -0.45);
+	glVertex2f(0.23, -0.4);
+	glVertex2f(0.23, -0.35);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.05, -0.45);
+	glVertex2f(-0.12, -0.32);
+	glVertex2f(-0.131, -0.28);
+	glVertex2f(-0.05, -0.28);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.131, -0.28);
+	glVertex2f(-0.07, -0.24);
+	glVertex2f(-0.025, -0.25);
+	glVertex2f(-0.005, -0.3);
+	glVertex2f(-0.005, -0.45);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(-0.005, -0.45);
+	glVertex2f(-0.005, -0.3);
+	glVertex2f(-0.052, -0.3);
+	glVertex2f(0.05, -0.32);
+	glVertex2f(0.052, -0.35);
+	glVertex2f(0.07, -0.4);
+	glVertex2f(0.08, -0.35);
+	glVertex2f(0.084, -0.3);
+	glVertex2f(0.087, -0.3);
+	glVertex2f(0.088, -0.45);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(0.087, -0.35);
+	glVertex2f(0.13, -0.34);
+	glVertex2f(0.15, -0.35);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(0.15, -0.35);
+	glVertex2f(0.16, -0.33);
+	glVertex2f(0.17, -0.335);
+	glVertex2f(0.18, -0.32);
+	glVertex2f(0.23, -0.35);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(0.23, -0.35);
+	glVertex2f(0.25, -0.38);
+	glVertex2f(0.23, -0.41);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex2f(0.18, -0.4);
+	glVertex2f(0.15, -0.43);
+	glVertex2f(0.12, -0.41);
+	glEnd();
+	glBegin(GL_POLYGON);
+
+	glEnd();
+}
+
+// 대륙 기본값은 초록색
+double cglR = 0;
+double cglG = 1;
+double cglB = 0;
+// 대륙들 집합 함수
+void drawContinent(int flag) {
+	if (flag == 0) {
+		glColor3f(0.0, 204, 0);
+	}
+	else {
+		glColor3f(cglR, cglG, cglB);
+	}
+	continent1();
+	continent2();
+	continent3();
+
+	glutSwapBuffers();
+}
+
+// 담배
+void drawTabacco() {
+	// 담배꽁초 던짐 모션 위해
+	if (t1) {
+		t1X = tabaX;
+		t1Y = tabaY;
+		x1 = tabaX;
+		y11 = tabaY;
+	}
+	else {
+		t1X = x1;
+		t1Y = y11;
+	}
+	// 담배 꽁초 (갈색)
+	glColor3f(0.8f, 0.4f, 0);
+	glBegin(GL_POLYGON);
+	glVertex2f(t1X, t1Y);
+	glVertex2f(t1X + 0.03, t1Y -0.2);
+	glVertex2f(t1X + 0.2, t1Y - 0.1);
+	glVertex2f(t1X + 0.17, t1Y + 0.1);
+	glEnd();
+	// 담배 몸통1 낙하 모션 위함
+	if (t2) {
+		t2X = tabaX;
+		t2Y = tabaY;
+		x2 = tabaX;
+		y2 = tabaY;
+		glColor3f(0.8f, 0.8f, 0.8);
+	}
+	else {
+		t2X = x2;
+		t2Y = y2;
+		glColor3f(t2glR, t2glG, t2glB);
+	}
+	// 담배 몸통1(회색)
+	glBegin(GL_POLYGON);
+	glVertex2f(t2X + 0.17, t2Y + 0.1);
+	glVertex2f(t2X + 0.2, t2Y - 0.1);
+	glVertex2f(t2X + 0.37, t2Y);		// x+=0.2,y-=0.1
+	glVertex2f(t2X + 0.34, t2Y + 0.2);
+	glEnd();
+	
+	// 담배 몸통2 낙하 모션 위함
+	if (t3) {
+		t3X = tabaX;
+		t3Y = tabaY;
+		x3 = tabaX;
+		y3 = tabaY;
+		glColor3f(0.8f, 0.8f, 0.8);
+	}
+	else {
+		t3X = x3;
+		t3Y = y3;
+		glColor3f(t3glR, t3glG, t3glB);
+	}
+	// 담배 몸통2(회색)
+	glBegin(GL_POLYGON);
+	glVertex2f(t3X + 0.34, t3Y + 0.2);
+	glVertex2f(t3X + 0.37, t3Y);
+	glVertex2f(t3X + 0.54, t3Y + 0.1);
+	glVertex2f(t3X + 0.51, t3Y + 0.3);
+	glEnd();
+
+	// 담배피는 모션 위함
+	if (firemode) {
+		tfireX = tabaX;
+		tfireY = tabaY;
+		xfire = tabaX;
+		yfire = tabaY;
+	}	// 담배가 타기 시작
+	else {
+		tfireX = xfire;
+		tfireY = yfire;
+	}
+	// 담배불
+	if (tfire) {
+		glColor3f(1, 0, 0);
+		glBegin(GL_POLYGON);
+		glVertex2f(tfireX + 0.54, tfireY + 0.1);
+		glVertex2f(tfireX + 0.51, tfireY + 0.3);
+		glVertex2f(tfireX + 0.48, tfireY + 0.283);
+		glVertex2f(tfireX + 0.51, tfireY + 0.08);
+		glEnd();
+	}
+}
+bool burning = false;
+int firecount = 0; 
+// 담배몸통1 짙회색 변하 후 낙하
+// 담배꽁초 던짐
+void downT2(int value) {
+	// 짙회색
+	if (t2glR >= 0.3) {
+		t2glR -= 0.01;
+		t2glG -= 0.01;
+		t2glB -= 0.01;
+	}
+	else    // 낙하
+		y2 -= 0.01;
+
+	// 담배꽁초 던짐
+	if (y2 <= -1.1) {
+			t1 = false;
+			x1 += 0.005;
+			y11 += 0.01;
+			xfire += 0.005;
+			yfire += 0.01;
+	}
+	glutPostRedisplay();
+	glutTimerFunc(10, downT2, 0);
+}
+int firecount2 = 0;
+// 담배몸통2 짙회색 변화 후 낙하
+void downT3(int value) {
+	firecount2++;
+	
+	// 짙회색
+	if (t3glR >= 0.3) {
+		t3glR -= 0.01;
+		t3glG -= 0.01;
+		t3glB -= 0.01;
+	}
+	else {	// 낙하
+		// 몸통1에 다다랐을때 멈추게끔
+		if (firecount > 540) {
+			y3 -= 0.1;
+			firecount++;
+			xfire -= 0.00028;
+			yfire -= 0.00017;
+		}
+	}
+	// 담배몸통1 이벤트 호출
+	if (firecount > 1120) {
+		t2 = false;
+		downt3 = false;
+		downt2 = true;
+	}
+	glutPostRedisplay();
+	if (!downt3 && downt2) {
+		glutTimerFunc(10, downT2, 0);
+	}
+	else {
+		glutTimerFunc(1, downT3, 0);
+	}
+}
+
+// 담배피기
+void smokingTabacco(int value) {
+	firemode = false;
+	firecount++;
+	if (firecount > 100)
+		burning = true;
+	// 몸통2에 다다랐을때
+	if(firecount<550){
+		if (firecount == 549)
+			t3 = false;
+		xfire -= 0.00028;
+		yfire -= 0.00017;
+	}
+	
+	glutPostRedisplay();
+	if (!t3) {
+		smokingtabacco = false;
+		glutTimerFunc(50, downT3, 0);
+	}
+	else {
+		glutTimerFunc(1, smokingTabacco, 0);
+	}
+}
+bool collapse = false;
+int waitcount = 0;
+// 팩맨과 충돌했을때 멈춤 + 담배피기 이벤트 호출
+void moveTabacco(int value) {
+	waitcount++;
+	printf("%d\n", waitcount);
+	if (tabaX >= 0)
+		tabaX -= 0.002;
+
+	if (tabaX <= 0 && collapse&& waitcount>400) {
+		movetabacco = false;
+		smokingtabacco = true;
+
+	}
+	glutPostRedisplay();
+	if (!movetabacco && smokingtabacco) {
+		glutTimerFunc(1, smokingTabacco, 0);
+	}
+	else {
+		glutTimerFunc(10, moveTabacco, 0);
+	}
+}
+bool downTabacco = true;
+bool onebound = true;
+bool twobound = true;
+
+// 낙하 후 투바운드까지
+void emergencyTabacco(int value) {
+	if (downTabacco) {		// 담배 낙하
+		if(tabaY > 0.085)
+			tabaY -= 0.03;
+		else
+			 downTabacco= false;
+	}
+	else if (onebound) {	// 담배 첫번째 바운드
+		if (tabaX <= 0.45) {
+			tabaX += 0.004;
+			tabaY += 0.01;
+		}
+		else if (tabaY >= 0.085) {
+			tabaX += 0.004;
+			tabaY -= 0.01;
+		}
+		else
+			onebound = false;
+	}
+	else if (twobound) {	// 담배 두번째 바운드
+		if (tabaX <= 0.52) {
+			tabaX += 0.002;
+			tabaY += 0.006;
+		}
+		else if (tabaY >= 0.085) {
+			tabaX += 0.002;
+			tabaY -= 0.006;
+		}
+		else{
+			twobound = false;
+			emergencytabacco = false;
+			movetabacco = true;
+		}
+	}
+	glutPostRedisplay();
+	if (!emergencytabacco && movetabacco) {
+		glutTimerFunc(10, moveTabacco, 0);
+	}
+	else {
+		glutTimerFunc(20, emergencyTabacco, 0);
+	}
+}
+
+// 바다 기본색 = 블루
+double pglR = 0;
+double pglG = 0;
+double pglB = 1;
+
+// 팩맨 + 대륙
+void drawPacMan() {
+
+	// 별 출력
+	//glScalef(scale, scale, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+
+	glPushMatrix();
+	glTranslatef(pacManX3, pacManY3, 0.0f); // 팩맨을 현재위치로 변환
+
+
+	glColor3f(pglR, pglG, pglB); // 팩맨 파랑색
+
+	// 팩맨모양
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(0.0, 0.0); // Center of Pac-Man
+	glVertex2f(0.0, 0.0); // 팩맨의 센터위치
+	for (float angle = pacManAngle3; angle <= 360.0 - pacManAngle3; angle += 1.0) {
+		float radians = angle * (3.14 / 180.0);
+		float x = 0.6 * cos(radians);
+		float y = 0.6 * sin(radians);
+		glVertex2f(x, y);
+	}
+	glEnd();
+	
+	// 팩맨 입
+	if (mouthOpen3) {
+		glBegin(GL_LINES);
+		glVertex2f(0.0, 0.0);
+		float radians1 = (pacManAngle3 - 20.0) * (3.14 / 180.0);
+		float x1 = 0.3 * cos(radians1);
+		float y1 = 0.3 * sin(radians1);
+		glVertex2f(x1, y1);
+		float radians2 = (360.0 - pacManAngle3 + 20.0) * (3.14 / 180.0);
+		float x2 = 0.3 * cos(radians2);
+		float y2 = 0.3 * sin(radians2);
+		glVertex2f(x2, y2);
+		glEnd();
+	}
+
+	
+	drawContinent(Cflag);
+
+	glutSwapBuffers();
+	glFlush();
+}
+
+// 장면 3 화면 출력 함수
+void Scene3() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+
+	glPushMatrix();
+	drawStars();
+	drawTabacco();
+	glPushMatrix();
+	drawPacMan();
+
+	glPopMatrix();
+
+
+}
+
+void mydisplay() {
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	Scene3();
+
+	glFlush();
+}
+
+//0.5초 단위로 팩맨 입벌렸다가 움츠렸다가 업데이트
+//갈수록 느리게 움직임
+void updatePacMan(int value) {
+	mspeed += 0.4;
+	if (mouthOpen3) {
+		pacManAngle3 -= 2.0;
+	}
+	else {
+		pacManAngle3 += 2.0;
+	}
+	if (pacManAngle3 <= 25.0 || pacManAngle3 >= 45.0) {
+		mouthOpen3 = !mouthOpen3;
+	}
+
+	glutPostRedisplay();
+	glutTimerFunc(mspeed, updatePacMan, 0);
+
+	// (별출력 함수) scale += 0.00006;
+
+}
+
+// 팩맨 이동
+void movePacMan(int value) {
+	if (pacManX3 <= -0.3)
+		pacManX3 += 0.003;
+	if (pacManX3 > -0.3)
+		collapse = true;
+	glutPostRedisplay();
+	glutTimerFunc(18, movePacMan, 0);
+}
+//팩맨 이동키
+void specialKeyFunc(int key, int x, int y) {
+	switch (key) {
+	case GLUT_KEY_UP:
+		pacManY3 += pacManSpeed3;
+		break;
+	case GLUT_KEY_DOWN:
+		pacManY3 -= pacManSpeed3;
+		break;
+	case GLUT_KEY_LEFT:
+		pacManX3 -= pacManSpeed3;
+		break;
+	case GLUT_KEY_RIGHT:
+		pacManX3 += pacManSpeed3;
+		break;
+	}
+	glutPostRedisplay();
+}
+
+bool burningq = false;
+int deathcount = 0;
+// 대륙 색상 마무리
+void updateContinent2(int value) {
+	deathcount++;
+	if (cglR > 0.25) {
+		cglB -= 0.01;
+		cglG -= 0.01;
+		cglR -= 0.03;
+		if (pacManY3 >= -0.02) {
+			pacManY3 -= 0.07;
+		}
+		else if (pacManY3 <= 0.02) {
+			pacManY3 += 0.07;
+		}
+	}
+	glutPostRedisplay();
+	glutTimerFunc(100, updateContinent2, 0);
+}
+// 대륙들 색상변화
+void updateContinent(int value) {
+	if (burning) {
+		// 대륙 = 초록색 -> 붉은색 -> 붉회색
+		if (cglB <= 0.25) {
+			cglB += 0.01;
+			cglG -= 0.015;
+			cglR += 0.01;
+		}
+		// 짙녹색 -> 짙회색
+		else if (cglR <= 0.45) {
+			cglB += 0.01;
+			cglG -= 0.001;
+			cglR += 0.01;
+		}
+		// 붉게
+		else if (cglR <= 0.53) {
+			cglR += 0.01;
+			if (pacManY3 >= -0.02) {
+				pacManY3 -= 0.07;
+			}
+			else if (pacManY3 <= 0.02) {
+				pacManY3 += 0.07;
+			}
+		}
+		else if (cglG >= 0.4) {
+			cglG -= 0.01;
+		}
+		// 붉회색
+		else if (cglG >= 0.24) {
+			cglB -= 0.03;
+			cglG -= 0.01;
+			cglR -= 0.01;
+		}
+		else {
+			burningq = true;
+		}
+
+		glutPostRedisplay();
+		if (burningq) {
+			glutTimerFunc(50, updateContinent2, 0);
+		}
+		else {
+			glutTimerFunc(50, updateContinent, 0);
+		}
+	}
+	else {
+		glutTimerFunc(50, updateContinent, 0);
+	}
+	
+}
+int rgbcount = 0;
+// 바다 색상변화
+void updateOcean(int value) {
+	if (burning) {
+		// 짙은 보라
+		if (rgbcount == 0) {
+			if (pglR <= 0.15) {
+				pglR += 0.002;
+				pglG += 0.002;
+				pglB -= 0.01;
+			}
+			else
+				rgbcount++;
+		}
+		if (rgbcount == 1) {
+			if (pglR >= 0.08) {
+				pglR -= 0.01;
+				pglG -= 0.01;
+				pglB -= 0.01;
+			}
+			else
+				rgbcount++;
+		}
+		if (rgbcount == 2) {
+			if (pglB >= 0.15) {
+				pglR -= 0.001;
+				pglG -= 0.003;
+				pglB -= 0.01;
+			}
+			rgbcount++;
+		}
+	}
+	glutPostRedisplay();
+	glutTimerFunc(50, updateOcean, 0);
+}
+
+// 팩맨 사망
+void deathPacMan(int value) {
+	if (deathcount>37) {
+		pacManY3 -= 0.01;
+		pacManX3 += 0.002;
+	}
+	glutPostRedisplay();
+	glutTimerFunc(30, deathPacMan, 0);
+}
+int main(int argc, char* argv[]) {
+	glutInit(&argc, argv);
+	glutInitWindowSize(1600, 900);
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow("Space");
+	
+	glutSpecialFunc(specialKeyFunc);
+	glutTimerFunc(mspeed, updatePacMan, 0);
+	glutTimerFunc(10, movePacMan, 0);
+	if(emergencytabacco)
+		glutTimerFunc(20, emergencyTabacco, 0);
+	glutTimerFunc(100, updateContinent, 0);
+	glutTimerFunc(100, updateOcean, 0);
+	glutTimerFunc(100, deathPacMan, 0);
+
+	glutDisplayFunc(mydisplay);
+	glutMainLoop();
+	return 0;
+}
