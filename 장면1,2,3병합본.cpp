@@ -1,5 +1,6 @@
-#define GL_SILENCE_DEPRECATION
-#include <GL/freeglut.h>
+#include <GL/glut.h>
+#include <GL/GL.h>
+#include <GL/GLU.h>
 #include <math.h>
 #include <stdio.h>
 #include <cmath>
@@ -4096,10 +4097,10 @@ void Drawboxs() {
 
 
 // 장면3 변환 타이머
-int Wait3 = 0;
+int wait3 = 0;
 void secneStartTimer(int value) {
-    Wait3++;
-    if (Wait3 > 20) {
+    wait3++;
+    if (wait3 > 20) {
         glutTimerFunc(mspeed, updatePacMan3, 0);
         glutTimerFunc(10, movePacMan3, 0);
         if (emergencytabacco)
